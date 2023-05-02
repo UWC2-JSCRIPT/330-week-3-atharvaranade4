@@ -13,5 +13,11 @@ const bookSchema = new mongoose.Schema({
 });
 
 bookSchema.index({ authorId: 1});
+bookSchema.index({ 
+  title: 'text', 
+  genre: 'text', 
+  blurb: 'text', 
+  ISBN: 'text'
+});
 
 module.exports = mongoose.model("books", bookSchema);

@@ -4,6 +4,11 @@ const Book = require('../models/book');
 
 module.exports = {};
 
+module.exports.getSearch = async (searchTerm) => {
+  return await Book.find({ 
+    $text: { $search: searchTerm }}).lean()
+}
+
 module.exports.getAll = async (page, perPage, authorId) => {
   if (authorId){
     return await Book.find({ authorId: authorId }).lean()

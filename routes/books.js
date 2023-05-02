@@ -22,6 +22,15 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+// Read - book/search
+router.get("/search", async (req, res, next) => {
+const book = await bookDAO.getSearch(req.query.query);
+  if (book)
+    res.json(book);
+  else
+    res.sendStatus(404);
+});
+
 // Read - single book
 router.get("/:id", async (req, res, next) => {
   const book = await bookDAO.getById(req.params.id);
