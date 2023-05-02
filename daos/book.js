@@ -4,7 +4,10 @@ const Book = require('../models/book');
 
 module.exports = {};
 
-module.exports.getAll = (page, perPage) => {
+module.exports.getAll = async (page, perPage, authorId) => {
+  if (authorId){
+    return await Book.find({ authorId: authorId }).lean()
+  }
   return Book.find().limit(perPage).skip(perPage*page).lean();
 }
 
