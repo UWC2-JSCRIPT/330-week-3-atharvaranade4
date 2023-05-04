@@ -33,11 +33,11 @@ const book = await bookDAO.getSearch(query);
 });
 
 // Read - author/stats
-router.get("/author/stats", async (req, res, next) => {
+router.get("/authors/stats", async (req, res, next) => {
   let { authorInfo } = req.query
-  const authorStats = await bookDAO.getAuthorStats(authorInfo);
-    if (authorStats)
-      res.json(authorStats);
+  const stats = await bookDAO.getAuthorStats(authorInfo);
+    if (stats)
+      res.json(stats);
     else
       res.sendStatus(404);
   });
