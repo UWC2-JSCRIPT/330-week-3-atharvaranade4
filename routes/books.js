@@ -13,7 +13,7 @@ router.post("/", async (req, res, next) => {
       const savedBook = await bookDAO.create(book);
       res.json(savedBook); 
     } catch(e) {
-      if (e instanceof bookDAO.BadDataError) {
+      if (e instanceof bookDAO.BadDataError || e.message.includes("E11000") ) {
         res.status(400).send(e.message);
       } else {
         res.status(500).send(e.message);
@@ -21,6 +21,26 @@ router.post("/", async (req, res, next) => {
     }
   }
 });
+
+// Read - book/search
+router.get("/search", async (req, res, next) => {
+let { query } = req.query
+const book = await bookDAO.getSearch(query);
+  if (book)
+    res.json(book);
+  else
+    res.sendStatus(404);
+});
+
+// Read - author/stats
+router.get("/authors/stats", async (req, res, next) => {
+  let { authorInfo } = req.query
+  const stats = await bookDAO.getAuthorStats(authorInfo);
+    if (stats)
+      res.json(stats);
+    else
+      res.sendStatus(404);
+  });
 
 // Read - single book
 router.get("/:id", async (req, res, next) => {
@@ -34,10 +54,10 @@ router.get("/:id", async (req, res, next) => {
 
 // Read - all books
 router.get("/", async (req, res, next) => {
-  let { page, perPage } = req.query;
+  let { page, perPage, authorId } = req.query;
   page = page ? Number(page) : 0;
-  perPage = perPage ? Number(perPage) : 10;
-  const books = await bookDAO.getAll(page, perPage);
+  perPage = perPage ? Number(perPage) : 20;
+  const books = await bookDAO.getAll(page, perPage, authorId);
   res.json(books);
 });
 
